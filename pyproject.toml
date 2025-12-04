@@ -13,7 +13,9 @@ dependencies = [
   "trafilatura",
   "sentence-transformers",
   "numpy",
-  "langdetect"
+  "langdetect",
+  "beautifulsoup4",
+  "lxml"
 ]
 
 [tool.setuptools]

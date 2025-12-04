@@ -4,3 +4,5 @@ trafilatura
 sentence-transformers
 numpy
 langdetect
+beautifulsoup4
+lxml

@@ -22,8 +22,8 @@ crawler:
   politeness_delay: 0.5       # secondes entre requêtes
 
 relevance:
-  min_chars: 400              # ignore pages trop courtes
-  relevance_threshold: 0.35   # seuil de pertinence
+  min_chars: 300              # ignore pages trop courtes
+  relevance_threshold: 0.2   # seuil de pertinence
   model: "keyword"          # "keyword" | "embedding"
   embedding_model_name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 

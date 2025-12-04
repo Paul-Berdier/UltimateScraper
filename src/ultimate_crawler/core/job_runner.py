@@ -11,6 +11,7 @@ from ..crawl.scheduler import Scheduler
 from ..crawl.fetcher import Fetcher
 from ..crawl.parser import html_to_text
 from ..crawl.robots import RobotsManager
+from ..crawl.links import extract_links_same_domain
 from ..relevance.language import detect_lang
 from ..relevance.keyword_filter import KeywordRelevanceFilter
 from ..relevance.embedding_model import EmbeddingRelevanceModel
@@ -106,6 +107,20 @@ class JobRunner:
             if not html:
                 logger.debug("Empty HTML, skipping: %s", url)
                 continue
+
+            # Découverte de nouveaux liens sur le même domaine
+            discovered = extract_links_same_domain(html, url)
+            if discovered:
+                # Ici, on laisse le scheduler filtrer grossièrement
+                allowed = self.scheduler.filter_urls(discovered)
+                if allowed:
+                    logger.debug(
+                        "Discovered %d links (allowed=%d) from %s",
+                        len(discovered),
+                        len(allowed),
+                        url,
+                    )
+                    frontier.extend(allowed)
 
             self.metrics.pages_fetched += 1
             self.scheduler.mark_crawled(url)
