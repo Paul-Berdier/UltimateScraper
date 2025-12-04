@@ -1,0 +1,6 @@
+requests
+PyYAML
+trafilatura
+sentence-transformers
+numpy
+langdetect

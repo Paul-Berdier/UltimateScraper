@@ -1,0 +1,23 @@
+[project]
+name = "ultimate-crawler"
+version = "0.1.0"
+description = "Ultimate keyword-driven multilingual web crawler with relevance filtering"
+authors = [
+  { name = "Paul Berdier" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "requests",
+  "PyYAML",
+  "trafilatura",
+  "sentence-transformers",
+  "numpy",
+  "langdetect"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

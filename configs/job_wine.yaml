@@ -1,0 +1,40 @@
+job_name: "wine_multilingual_crawl"
+
+keywords:
+  - "vin"
+  - "wine"
+  - "vino"
+  - "葡萄酒"
+
+languages: ["fr", "en", "es", "zh"]
+
+limits:
+  max_domains: 200            # nb de domaines différents
+  max_pages: 20000            # nb de pages max
+  memory_limit_mb: 10240      # taille max approximative écrite (~10 Go)
+  max_pages_per_domain: 500   # limite par domaine
+
+crawler:
+  user_agent: "UltimateCrawler/1.0 (+contact@example.com)"
+  max_concurrent_requests: 4  # pour l'instant fetcher sync => on l’ignore
+  request_timeout: 10
+  obey_robots_txt: true
+  politeness_delay: 0.5       # secondes entre requêtes
+
+relevance:
+  min_chars: 400              # ignore pages trop courtes
+  relevance_threshold: 0.35   # seuil de pertinence
+  model: "embedding"          # "keyword" | "embedding"
+  embedding_model_name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+output:
+  dir: "data/jobs/wine_multilingual"
+  raw_pages_file: "raw_pages.jsonl"
+  filtered_docs_file: "docs_filtered.jsonl"
+
+# Optionnel : seeds explicites si tu veux by-passer la recherche plus tard
+seeds:
+  - "https://www.winefolly.com/"
+  - "https://www.decanter.com/"
+  - "https://www.hachette-vins.com/"
+  - "https://vivancoculturadevino.es/"
