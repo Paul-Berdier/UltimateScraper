@@ -24,7 +24,7 @@ crawler:
 relevance:
   min_chars: 400              # ignore pages trop courtes
   relevance_threshold: 0.35   # seuil de pertinence
-  model: "embedding"          # "keyword" | "embedding"
+  model: "keyword"          # "keyword" | "embedding"
   embedding_model_name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 output:

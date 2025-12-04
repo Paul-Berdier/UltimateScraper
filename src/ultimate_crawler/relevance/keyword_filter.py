@@ -1,6 +1,9 @@
 # src/ultimate_crawler/relevance/keyword_filter.py
 
 from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class KeywordRelevanceFilter:
@@ -11,6 +14,7 @@ class KeywordRelevanceFilter:
 
     def __init__(self, keywords: List[str]):
         self.keywords = [k.lower() for k in keywords]
+        logger.info("KeywordRelevanceFilter initialized with keywords=%s", self.keywords)
 
     def score(self, text: str) -> float:
         if not text:
@@ -22,7 +26,9 @@ class KeywordRelevanceFilter:
 
         count = 0
         for kw in self.keywords:
-            count += t.count(kw)
+            c = t.count(kw)
+            count += c
 
-        # normalisation très simple
-        return min(1.0, count / 10.0)
+        score = min(1.0, count / 10.0)
+        logger.debug("Keyword score=%f (count=%d)", score, count)
+        return score
