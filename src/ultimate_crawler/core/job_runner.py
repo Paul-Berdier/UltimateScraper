@@ -16,6 +16,8 @@ from ..relevance.language import detect_lang
 from ..relevance.keyword_filter import KeywordRelevanceFilter
 from ..relevance.embedding_model import EmbeddingRelevanceModel
 from ..relevance.embedding_filter import EmbeddingRelevanceFilter
+from ..relevance.clfdoc_model import ClfDocConfig, ClfDocModel
+from ..relevance.clfdoc_filter import HybridRelevanceFilter
 from ..io.writers import RotatingJSONLWriter
 from .metrics import CrawlMetrics
 from .utils import estimate_bytes
@@ -36,6 +38,7 @@ class JobRunner:
         if cfg.relevance.model == "keyword":
             logger.info("Using KeywordRelevanceFilter")
             self.relevance = KeywordRelevanceFilter(cfg.keywords)
+
         elif cfg.relevance.model == "embedding":
             logger.info(
                 "Using EmbeddingRelevanceFilter with model=%s",
@@ -43,6 +46,24 @@ class JobRunner:
             )
             emb_model = EmbeddingRelevanceModel(cfg.relevance.embedding_model_name, cfg.keywords)
             self.relevance = EmbeddingRelevanceFilter(emb_model)
+
+        elif cfg.relevance.model == "clfdoc_hybrid":
+            logger.info(
+                "Using HybridRelevanceFilter (embedding + clfdoc), emb_model=%s",
+                cfg.relevance.embedding_model_name,
+            )
+            emb_model = EmbeddingRelevanceModel(cfg.relevance.embedding_model_name, cfg.keywords)
+
+            clf_cfg = ClfDocConfig(
+                model_path=cfg.relevance.clfdoc_model_path,
+                vectorizer_path=cfg.relevance.clfdoc_vectorizer_path,
+                positive_label=getattr(cfg.relevance, "clfdoc_positive_label", "wine"),
+            )
+            clf_model = ClfDocModel(clf_cfg)
+
+            alpha = getattr(cfg.relevance, "clfdoc_alpha", 0.5)
+            self.relevance = HybridRelevanceFilter(emb_model, clf_model, alpha=alpha)
+
         else:
             raise ValueError(f"Unknown relevance model: {cfg.relevance.model}")
 

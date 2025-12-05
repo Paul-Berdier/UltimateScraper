@@ -6,3 +6,5 @@ numpy
 langdetect
 beautifulsoup4
 lxml
+scikit-learn
+joblib

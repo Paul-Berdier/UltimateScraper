@@ -16,20 +16,24 @@ limits:
 
 crawler:
   user_agent: "UltimateCrawler/1.0 (+contact@example.com)"
-  max_concurrent_requests: 4  # pour l'instant fetcher sync => on l’ignore
   request_timeout: 10
   obey_robots_txt: true
-  politeness_delay: 0.5       # secondes entre requêtes
+  politeness_delay: 0.5
+  use_playwright: false   # true si tu veux activer Playwright
 
 relevance:
-  min_chars: 300              # ignore pages trop courtes
-  relevance_threshold: 0.2   # seuil de pertinence
+  min_chars: 400              # ignore pages trop courtes
+  relevance_threshold: 0.35   # seuil de pertinence
   model: "keyword"          # "keyword" | "embedding"
   embedding_model_name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  clfdoc_model_path: "models/clfdoc_wine.joblib"
+  clfdoc_vectorizer_path: "models/clfdoc_vectorizer.joblib"
+  clfdoc_positive_label: "wine"
+  clfdoc_alpha: 0.6   # 60% embedding / 40% clfdoc
 
 output:
   dir: "data/jobs/wine_multilingual"
-  raw_pages_file: "raw_pages.jsonl"
+  raw_pages_file: "docs_raw.jsonl"
   filtered_docs_file: "docs_filtered.jsonl"
 
 # Optionnel : seeds explicites si tu veux by-passer la recherche plus tard
